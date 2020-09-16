@@ -59,12 +59,22 @@ const CartProvider: React.FC = ({ children }) => {
   }, [products]);
 
   const increment = useCallback(async id => {
-    // TODO INCREMENTS A PRODUCT QUANTITY IN THE CART
-  }, []);
+
+    const result = products.map( e => e.id == id ?  {...e, quantity: e.quantity + 1 }: e)
+    setProducts(result)
+
+
+    await AsyncStorage.setItem('@GoBarberMarketplace:products', JSON.stringify(result))
+  },[products],);
 
   const decrement = useCallback(async id => {
-    // TODO DECREMENTS A PRODUCT QUANTITY IN THE CART
-  }, []);
+    const result = products.map( e => e.id == id ?  {...e, quantity: e.quantity - 1 }: e)
+
+    setProducts(result)
+
+
+    await AsyncStorage.setItem('@GoBarberMarketplace:products', JSON.stringify(result))
+  },[products],);
 
   const value = React.useMemo(
     () => ({ addToCart, increment, decrement, products }),
